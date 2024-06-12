@@ -19,4 +19,7 @@ public class Edge {
     @JoinColumn(name = "graph_id")
     private Graph graph;
 
+
+    public Edge() {
+    }
 }
