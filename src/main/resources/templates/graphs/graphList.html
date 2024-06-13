@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="container">
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>정점 수</th>
+                <th>간선 수</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="graph : ${graphs}">
+                <td th:text="${graph.id}"></td>
+                <td th:text="${graph.vertexCount}"></td>
+                <td th:text="${graph.edgeCount}"></td>
+                <td>
+                    <a href="#" th:href="@{/graphs/{id} (id=${graph.id})}"> 그래프 보기</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

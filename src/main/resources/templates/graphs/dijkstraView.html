@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Graph View</title>
+    <style>
+        #graph-container {
+            position: relative;
+            width: 800px;
+            height: 800px;
+            border: 1px solid #ccc;
+            margin: auto;
+        }
+
+        .node {
+            width: 40px;
+            height: 40px;
+            background-color: lightblue;
+            border-radius: 50%;
+            position: absolute;
+            text-align: center;
+            line-height: 40px;
+        }
+
+        .edge {
+            position: absolute;
+            background-color: gray;
+            height: 2px;
+            transform-origin: 0 0;
+        }
+
+        .edge-weight {
+            position: absolute;
+            background-color: white;
+            padding: 2px;
+            border: 1px solid #ccc;
+            font-size: 12px;
+        }
+
+        .graph-info {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            border: 1px solid black;
+            padding: 10px;
+        }
+
+        .controls {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<h2>Graph Visualization</h2>
+<div class="controls">
+</div>
+
+<button class="button" th:onclick="'location.href=\'/graphs/' + ${graphId} + '/dijkstra\''">Show Dijkstra Result</button>
+<button class="button" th:onclick="'location.href=\'/graphs/' + ${graphId} + '/mst\''">Show MST Result</button>
+<h2>MST weight: <span th:text="${mstWeight}"></span></h2>
+<div id="graph-container"></div>
+<div class="graph-info">
+    <p>Vertex Count: <span th:text="${vertexCount}"></span></p>
+    <p>Edge Count: <span th:text="${edgeCount}"></span></p>
+    <p>Edges:</p>
+    <ul>
+        <li th:each="edge : ${edges}">
+            <span th:text="'From: ' + ${edge.from} + ' To: ' + ${edge.to} + ' Weight: ' + ${edge.weight}"></span>
+        </li>
+    </ul>
+    <p>Shortest Distances from Vertex <span th:text="${startVertex}"></span>:</p>
+    <ul>
+        <div th:each="index : ${#numbers.sequence(1, dist.length-1)}">
+            <!-- 여기에 반복되는 내용을 넣으세요 -->
+            Index: <span th:text="${index}"></span>
+            Dist: <span th:text="${dist[index]}"></span>
+
+        </div>
+    </ul>
+    <button class="button" th:onclick="'location.href=\'/graphs/' + ${graphId} + '/edit\''">Edit</button>
+    <p></p>
+    <form action="#" th:action="@{'/graphs/' + ${graphId} + '/delete'}" method="post">
+        <button type="submit" class="button">delete</button>
+    </form>
+</div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    console.log('JavaScript code is running.');
+
+    const vertexCount = /*[[${vertexCount}]]*/ 0;
+    const edges = /*[[${edges}]]*/ [];
+
+    console.log('Edges:', edges);
+
+    const container = document.getElementById('graph-container');
+    const centerX = container.offsetWidth / 2;
+    const centerY = container.offsetHeight / 2;
+    const radius = 300;
+
+    // 정점의 위치 계산 및 렌더링
+    for (let i = 1; i <= vertexCount; i++) {
+        const theta = (2 * Math.PI / vertexCount) * (i - 1);
+        const x = centerX + radius * Math.cos(theta) - 20;
+        const y = centerY + radius * Math.sin(theta) - 20;
+
+        const node = document.createElement('div');
+        node.className = 'node';
+        node.style.left = `${x}px`;
+        node.style.top = `${y}px`;
+        node.textContent = i;
+        container.appendChild(node);
+    }
+
+    // 간선 렌더링
+    edges.forEach(edge => {
+        const fromNode = container.children[edge.from - 1];
+        const toNode = container.children[edge.to - 1];
+
+        const x1 = fromNode.offsetLeft + fromNode.offsetWidth / 2;
+        const y1 = fromNode.offsetTop + fromNode.offsetHeight / 2;
+        const x2 = toNode.offsetLeft + toNode.offsetWidth / 2;
+        const y2 = toNode.offsetTop + toNode.offsetHeight / 2;
+
+        const length = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+        const angle = Math.atan2(y2 - y1, x2 - x1);
+
+        const edgeElement = document.createElement('div');
+        edgeElement.className = 'edge';
+        edgeElement.style.width = `${length}px`;
+        edgeElement.style.left = `${x1}px`;
+        edgeElement.style.top = `${y1}px`;
+        edgeElement.style.transform = `rotate(${angle}rad)`;
+
+        container.appendChild(edgeElement);
+
+        // 가중치 표시
+        const midX = (x1 + x2) / 2;
+        const midY = (y1 + y2) / 2;
+        const weightElement = document.createElement('div');
+        weightElement.className = 'edge-weight';
+        weightElement.style.left = `${midX + 10}px`; // 선의 오른쪽에 위치
+        weightElement.style.top = `${midY - 10}px`;
+        weightElement.textContent = edge.weight;
+
+        container.appendChild(weightElement);
+    });
+
+    /*]]>*/
+</script>
+</body>
+</html>

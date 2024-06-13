@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Graph</title>
+</head>
+<body>
+<h2>Create New Graph</h2>
+<<form action="#" th:action method="post" th:object="${graph}">
+    <label for="vertexCount">Vertex Count:</label>
+    <input type="number" id="vertexCount" name="vertexCount" th:field="*{vertexCount}" required><br>
+
+    <label for="edgeCount">Edge Count:</label>
+    <input type="number" id="edgeCount" name="edgeCount" th:field="*{edgeCount}" required><br>
+
+    <label for="edgeInfo">Edge Information:</label><br>
+    <textarea id="edgeInfo" name="edgeInfo" th:field="*{edgeInfo}" rows="20" required></textarea><br>
+
+    <button type="submit">Update</button>
+</form>
+</body>
+</html>
