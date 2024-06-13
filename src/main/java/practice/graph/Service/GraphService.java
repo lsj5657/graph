@@ -2,6 +2,7 @@ package practice.graph.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import practice.graph.dto.GraphDTO;
 import practice.graph.entity.Graph;
 import practice.graph.repository.GraphRepository;
 
@@ -30,7 +31,7 @@ public class GraphService {
         graphRepository.deleteById(id);
     }
 
-    public void update(Long id, Graph updateParam){
+    public void update(Long id, GraphDTO updateParam){
         Graph graph = findById(id);
         graph.setVertexCount(updateParam.getVertexCount());
         graph.setEdgeCount(updateParam.getEdgeCount());
