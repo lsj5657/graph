@@ -73,28 +73,31 @@
 <div class="controls">
 </div>
 
-<button class="button" th:onclick="'location.href=\'/graphs/' + ${graphId} + '/mst\''">Show MST Result</button>
+<button class="button" th:onclick="'location.href=\'/graphs/' + ${graphId} + '/mst\''">MST</button>
 <form action="#" th:action="@{'/graphs/' + ${graphId} + '/dijkstra'}" method="get">
-    <button type="submit" class="button">Show Dijkstra Result</button>
+    <button type="submit" class="button">다익스트라</button>
     <label for="startVertex">Enter Start Vertex (1 to <span th:text="${vertexCount}"></span>): </label>
     <input type="number" id="startVertex" name="startVertex" value="1" min="1" th:max="${vertexCount}" required>
 </form>
+<button class="button" th:onclick="'location.href=\'/graphs\''">메인으로</button>
 <div id="graph-container"></div>
 <div class="graph-info">
-    <p>Vertex Count: <span th:text="${vertexCount}"></span></p>
-    <p>Edge Count: <span th:text="${edgeCount}"></span></p>
-    <p>Edges:</p>
+    <p>정점 수: <span th:text="${vertexCount}"></span></p>
+    <p>간선 수: <span th:text="${edgeCount}"></span></p>
+    <p>간선정보:</p>
     <ul>
         <li th:each="edge : ${edges}">
-            <span th:text="'From: ' + ${edge.from} + ' To: ' + ${edge.to} + ' Weight: ' + ${edge.weight}"></span>
+            <span th:text="'src: ' + ${edge.from} + ' dst: ' + ${edge.to} + ' weight: ' + ${edge.weight}"></span>
         </li>
     </ul>
-    <button class="button" th:onclick="'location.href=\'/graphs/' + ${graphId} + '/edit\''">Edit</button>
+    <button class="button" th:onclick="'location.href=\'/graphs/' + ${graphId} + '/edit\''">수정</button>
     <p></p>
     <form action="#" th:action="@{'/graphs/' + ${graphId} + '/delete'}" method="post">
-        <button type="submit" class="button">delete</button>
+        <button type="submit" class="button">삭제</button>
     </form>
 </div>
+
+
 <script th:inline="javascript">
     /*<![CDATA[*/
     console.log('JavaScript code is running.');

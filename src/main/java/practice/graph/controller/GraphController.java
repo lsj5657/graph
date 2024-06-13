@@ -1,9 +1,11 @@
 package practice.graph.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import practice.graph.Service.GraphService;
@@ -34,18 +36,26 @@ public class GraphController {
 
     @GetMapping("graphs/new")
     public String createGraph(Model model){
-        Graph graph = new Graph();
-        model.addAttribute("graph", graph);
+        GraphDTO graphDTO = new GraphDTO();
+        model.addAttribute("graph", graphDTO);
         return "graphs/createGraphForm";
     }
 
     @PostMapping("graphs/new")
-    public String create(@ModelAttribute Graph graph){
+    public String create(@ModelAttribute("graph") @Valid GraphDTO graphDTO, BindingResult bindingResult){
 
-        int N =graph.getVertexCount();
-        int M = graph.getEdgeCount();
-        log.info("N={}", N);
-        log.info("M={}", M);
+        System.out.println(graphDTO);
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(error -> System.out.println(error.toString()));
+            return "graphs/createGraphForm";
+        }
+
+
+        Graph graph = new Graph();
+        graph.setVertexCount(graphDTO.getVertexCount());
+        graph.setEdgeCount(graphDTO.getEdgeCount());
+        graph.setEdgeInfo(graphDTO.getEdgeInfo());
+
 
         System.out.println(graph.getEdgeInfo());
         graphService.save(graph);
@@ -131,7 +141,7 @@ public class GraphController {
 
         model.addAttribute("graphId",id);
         model.addAttribute("vertexCount", N);
-        model.addAttribute("edgeCount", N-1);
+        model.addAttribute("edgeCount", treeEdges.size());
         model.addAttribute("edges", treeEdges);
         model.addAttribute("mstWeight", mstWeight);
 
@@ -156,6 +166,7 @@ public class GraphController {
         }
         for (Edge edge : edges) {
             adjacencyList.get(edge.getFrom()).add(new int[]{edge.getWeight(), edge.getTo()});
+            adjacencyList.get(edge.getTo()).add(new int[]{edge.getWeight(), edge.getFrom()});
         }
 
         // Dijkstra algorithm variables

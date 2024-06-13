@@ -3,18 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Create Graph</title>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <h2>Create New Graph</h2>
 <form action="#" th:action th:object="${graph}" method="post">
     <label for="vertexCount">Vertex Count:</label>
     <input type="number" id="vertexCount" name="vertexCount" th:field="*{vertexCount}" required><br>
+    <div th:if="${#fields.hasErrors('vertexCount')}" th:errors="*{vertexCount}" class="error">Invalid vertex count</div>
 
     <label for="edgeCount">Edge Count:</label>
     <input type="number" id="edgeCount" name="edgeCount" th:field="*{edgeCount}" required><br>
+    <div th:if="${#fields.hasErrors('edgeCount')}" th:errors="*{edgeCount}" class="error">Invalid edge count</div>
 
     <label for="edgeInfo">Edge Information:</label><br>
-    <textarea id="edgeInfo" name="edgeInfo" th:field="*{edgeInfo}" rows="20" required></textarea><br>
+    <textarea id="edgeInfo" name="edgeInfo" th:field="*{edgeInfo}" rows="20"></textarea><br>
+    <div th:if="${#fields.hasErrors('edgeInfo')}" th:errors="*{edgeInfo}" class="error">Invalid edge information</div>
 
     <button type="submit">Create</button>
 </form>
