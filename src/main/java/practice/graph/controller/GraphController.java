@@ -76,7 +76,13 @@ public class GraphController {
     }
 
     @PostMapping("graphs/{id}/edit")
-    public String edit(@PathVariable Long id,@ModelAttribute("graph") GraphDTO graphDTO){
+    public String edit(@PathVariable Long id,@ModelAttribute("graph") @Valid GraphDTO graphDTO, BindingResult bindingResult){
+
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(error -> System.out.println(error.toString()));
+
+            return "graphs/editGraphForm"; // 적절한 입력 폼 경로로 변경해야 합니다.
+        }
         log.info("post edit");
         System.out.println("graphDTO = " + graphDTO.getVertexCount());
         System.out.println("graphDTO = " + graphDTO.getEdgeCount());
