@@ -1,5 +1,19 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+<style>
+    .button {
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .button:hover {
+        background-color: #0056b3;
+    }
+</style>
 <body>
 <div class="container">
     <div>
@@ -23,6 +37,8 @@
             </tr>
             </tbody>
         </table>
+        <button class="button" th:onclick="'location.href=\'/graphs/new\''">그래프 추가</button>
+
     </div>
 </div>
 </body>
