@@ -16,9 +16,7 @@ public class Graph {
 
     private int vertexCount;
     private int edgeCount;
-
-    @OneToMany(mappedBy = "graph")
-    private List<Edge> edges = new ArrayList<>();
+    String edgeInfo;
 
 
     public Graph() {
