@@ -1,45 +1,91 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<style>
-    .button {
-        padding: 10px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        cursor: pointer;
-        text-align: center;
-    }
+<head>
+    <meta charset="UTF-8">
+    <title>Graph List</title>
+    <style>
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
 
-    .button:hover {
-        background-color: #0056b3;
-    }
-</style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .link-button {
+            color: #007bff;
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+        }
+
+        .link-button:hover {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
 <body>
 <div class="container">
-    <div>
-        <table>
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>정점 수</th>
-                <th>간선 수</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="graph : ${graphs}">
-                <td th:text="${graph.id}"></td>
-                <td th:text="${graph.vertexCount}"></td>
-                <td th:text="${graph.edgeCount}"></td>
-                <td>
-                    <a href="#" th:href="@{/graphs/{id} (id=${graph.id})}"> 그래프 보기</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <button class="button" th:onclick="'location.href=\'/graphs/new\''">그래프 추가</button>
-
-    </div>
+    <h2>Graph List</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>정점 수</th>
+            <th>간선 수</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="graph : ${graphs}">
+            <td th:text="${graph.id}"></td>
+            <td th:text="${graph.vertexCount}"></td>
+            <td th:text="${graph.edgeCount}"></td>
+            <td>
+                <a href="#" th:href="@{/graphs/{id} (id=${graph.id})}" class="link-button">그래프 보기</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <button class="button" th:onclick="'location.href=\'/graphs/new\''">그래프 추가</button>
 </div>
 </body>
 </html>

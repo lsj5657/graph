@@ -3,20 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <title>Create Graph</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .container {
+            width: 60%;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .error {
+            color: red;
+            margin-bottom: 10px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-<h2>Create New Graph</h2>
-<<form action="#" th:action method="post" th:object="${graph}">
-    <label for="vertexCount">Vertex Count:</label>
-    <input type="number" id="vertexCount" name="vertexCount" th:field="*{vertexCount}" required><br>
+<div class="container">
+    <h2>Create New Graph</h2>
+    <form action="#" th:action th:object="${graph}" method="post">
+        <label for="vertexCount">Vertex Count:</label>
+        <input type="number" id="vertexCount" name="vertexCount" th:field="*{vertexCount}" required>
+        <div th:if="${#fields.hasErrors('vertexCount')}" th:errors="*{vertexCount}" class="error">Invalid vertex count</div>
 
-    <label for="edgeCount">Edge Count:</label>
-    <input type="number" id="edgeCount" name="edgeCount" th:field="*{edgeCount}" required><br>
+        <label for="edgeCount">Edge Count:</label>
+        <input type="number" id="edgeCount" name="edgeCount" th:field="*{edgeCount}" required>
+        <div th:if="${#fields.hasErrors('edgeCount')}" th:errors="*{edgeCount}" class="error">Invalid edge count</div>
 
-    <label for="edgeInfo">Edge Information:</label><br>
-    <textarea id="edgeInfo" name="edgeInfo" th:field="*{edgeInfo}" rows="20" required></textarea><br>
+        <label for="edgeInfo">Edge Information:</label>
+        <textarea id="edgeInfo" name="edgeInfo" th:field="*{edgeInfo}" rows="10"></textarea>
+        <div th:if="${#fields.hasErrors('edgeInfo')}" th:errors="*{edgeInfo}" class="error">Invalid edge information</div>
 
-    <button type="submit">Update</button>
-</form>
+        <button type="submit">update</button>
+    </form>
+</div>
 </body>
 </html>
