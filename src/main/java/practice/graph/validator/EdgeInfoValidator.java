@@ -2,8 +2,10 @@ package practice.graph.validator;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import lombok.extern.slf4j.Slf4j;
 import practice.graph.dto.GraphDTO;
 
+@Slf4j
 public class EdgeInfoValidator implements ConstraintValidator<ValidEdgeInfo, GraphDTO> {
 
     @Override
@@ -15,15 +17,20 @@ public class EdgeInfoValidator implements ConstraintValidator<ValidEdgeInfo, Gra
         String edgeInfo = graphDTO.getEdgeInfo();
         int expectedEdgeCount = graphDTO.getEdgeCount();
 
-        // Treat edgeInfo as empty if it is null
-        if (edgeInfo == null) {
-            edgeInfo = "";
-        }
+
+
+
 
         String[] lines = edgeInfo.split("\n");
+
+        if(edgeInfo == "" ){
+            if(expectedEdgeCount==0) return true;
+            else return false;
+        }
+
         if (lines.length != expectedEdgeCount) {
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate("Edge count does not match the number of edges provided.")
+            context.buildConstraintViolationWithTemplate("간선 입력이 올바르지 않습니다.")
                     .addPropertyNode("edgeInfo")
                     .addConstraintViolation();
             return false;
@@ -33,7 +40,7 @@ public class EdgeInfoValidator implements ConstraintValidator<ValidEdgeInfo, Gra
             String[] parts = line.trim().split("\\s+");
             if (parts.length != 3) {
                 context.disableDefaultConstraintViolation();
-                context.buildConstraintViolationWithTemplate("Each line must contain exactly three numbers.")
+                context.buildConstraintViolationWithTemplate("간선 입력이 올바르지 않습니다.")
                         .addPropertyNode("edgeInfo")
                         .addConstraintViolation();
                 return false;
@@ -43,7 +50,7 @@ public class EdgeInfoValidator implements ConstraintValidator<ValidEdgeInfo, Gra
                     Integer.parseInt(part);
                 } catch (NumberFormatException e) {
                     context.disableDefaultConstraintViolation();
-                    context.buildConstraintViolationWithTemplate("Each part must be a valid number.")
+                    context.buildConstraintViolationWithTemplate("간선 입력이 올바르지 않습니다.")
                             .addPropertyNode("edgeInfo")
                             .addConstraintViolation();
                     return false;
